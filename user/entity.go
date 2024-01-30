@@ -1,5 +1,7 @@
 package user
 
+// it's like Schema from DB to know the column from a table
+
 import "time"
 
 type User struct {

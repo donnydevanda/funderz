@@ -1,5 +1,7 @@
 package helper
 
+// this file is used to set common function such as API response format
+
 import "github.com/go-playground/validator/v10"
 
 type Response struct {
@@ -13,6 +15,7 @@ type Meta struct {
 	Status  string `json:"status"`
 }
 
+// function to format API response
 func ApiResponse(message string, code int, status string, data interface{}) Response {
 	meta := Meta{
 		Message: message,
@@ -28,6 +31,8 @@ func ApiResponse(message string, code int, status string, data interface{}) Resp
 	return jsonResponse
 }
 
+// function to format error in input validation
+// it's in the form of array because the error can be multiple
 func FormatValidationError(err error) []string {
 	var errors []string
 

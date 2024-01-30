@@ -1,9 +1,16 @@
 package user
 
-import "golang.org/x/crypto/bcrypt"
+// create a contract (it's like a method in a controller that accesible)
+
+import (
+	"errors"
+
+	"golang.org/x/crypto/bcrypt"
+)
 
 type Service interface {
 	RegisterUser(input RegisterUserInput) (User, error)
+	Login(input LoginInput) (User, error)
 }
 
 type service struct {
@@ -14,6 +21,7 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
+// function for register user
 func (s *service) RegisterUser(input RegisterUserInput) (User, error) {
 	user := User{}
 	user.Name = input.Name
@@ -35,4 +43,30 @@ func (s *service) RegisterUser(input RegisterUserInput) (User, error) {
 	}
 
 	return newUser, err
+}
+
+// function for validate login
+func (s *service) Login(input LoginInput) (User, error) {
+	// get user input
+	email := input.Email
+	password := input.Password
+
+	// check email
+	user, err := s.repository.FindByEmail(email)
+	if err != nil {
+		return user, err
+	}
+
+	// check if user not exist
+	if user.ID == 0 {
+		return user, errors.New("User not found")
+	}
+
+	// check password (using bcrypt library to compare hash with user input)
+	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
 }
