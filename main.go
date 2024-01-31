@@ -1,6 +1,7 @@
 package main
 
 import (
+	"funderz/auth"
 	"funderz/handler"
 	"funderz/user"
 	"log"
@@ -24,25 +25,10 @@ func main() {
 
 	// connect service to to repository (like a controller to model in MVC)
 	userService := user.NewService(userRepository)
-
-	// // == example for testing ==
-	// // create dump data for LoginInput
-	// input := user.LoginInput {
-	// 	Email: "admin@funderz.com",
-	// 	Password: "123123123",
-	// }
-
-	// // check Login function using dump data
-	// user, err := userService.Login(input)
-	// if err != nil {
-	// 	fmt.Println("Terjadi kesalahan")
-	// } else {
-	// 	fmt.Println(user.Email)
-	// 	fmt.Print(user.Name)
-	// }
+	authService := auth.NewService()
 
 	// set handler so the function in service is accessible
-	userHandler := handler.NewUserHandler(userService)
+	userHandler := handler.NewUserHandler(userService, authService)
 
 	// initiate API
 	router := gin.Default()
