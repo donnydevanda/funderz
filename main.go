@@ -31,21 +31,27 @@ func main() {
 
 	// connect service to to repository (like a controller to model in MVC)
 	userService := user.NewService(userRepository)
+	campaignService := campaign.NewService(campaignRepository)
 	authService := auth.NewService()
 
 	// set handler so the function in service is accessible
 	userHandler := handler.NewUserHandler(userService, authService)
+	campaignHandler := handler.NewCampaignHandler(campaignService)
 
 	// initiate API
 	router := gin.Default()
 
 	// register API
 	api := router.Group("/api/v1")
+
 	api.POST("/users", userHandler.RegisterUser)
 	api.POST("/sessions", userHandler.RegisterUser)
 	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
+	
 	// authMiddlerware will pass the function, using authMiddleware() will execute it
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
+
+	api.GET("/campaigns", campaignHandler.GetCampaigns)
 
 	// run router API
 	router.Run()

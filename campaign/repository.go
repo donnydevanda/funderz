@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type Repository interface {
 	FindAll() ([]Campaign, error)
-	FindByUserId(userID int) ([]Campaign, error)
+	FindByUserID(userID int) ([]Campaign, error)
 }
 
 // give direct access to DB
@@ -28,7 +28,7 @@ func (r *repository) FindAll() ([]Campaign, error) {
 	return campaigns, nil
 }
 
-func (r *repository) FindByUserID (userID int) ([]Campaign, error) {
+func (r *repository) FindByUserID(userID int) ([]Campaign, error) {
 	var campaigns []Campaign
 	// Preload: to load data from associated tables
 	err := r.db.Where("user_id = ?", userID).Preload("CampaignImages", "campaign_images.is_primary = 1").Find(&campaigns).Error
