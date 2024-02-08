@@ -2,6 +2,7 @@ package main
 
 import (
 	"funderz/auth"
+	"funderz/campaign"
 	"funderz/handler"
 	"funderz/helper"
 	"funderz/user"
@@ -26,6 +27,7 @@ func main() {
 
 	// connect repository to DB (like a model to DB in MVC)
 	userRepository := user.NewRepository(db)
+	campaignRepository := campaign.NewRepository(db)
 
 	// connect service to to repository (like a controller to model in MVC)
 	userService := user.NewService(userRepository)
