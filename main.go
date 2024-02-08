@@ -40,6 +40,7 @@ func main() {
 
 	// initiate API
 	router := gin.Default()
+	router.Static("/images", "./images")
 
 	// register API
 	api := router.Group("/api/v1")
