@@ -16,7 +16,7 @@ func NewService(repository Repository) *service {
 // so it doesn't need to use JSON binding
 func (s *service) GetCampaigns(userID int) ([]Campaign, error) {
 	if userID != 0 {
-		campaigns, err := s.repository.FindByUserId(userID)
+		campaigns, err := s.repository.FindByUserID(userID)
 		if err != nil {
 			return campaigns, err
 		}
